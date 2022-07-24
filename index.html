@@ -8,6 +8,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="./assets/style.css">
   </head>
   <body>
 
@@ -22,7 +23,7 @@
                 <div class="col-md-3">
                     <h4>Search for a City:</h4>
                     <form class="form-inline" id="search-form">
-                        <input type="search" class="form-control mb-3 ds-input" id="cityname" placeholder="Enter city name...">
+                        <input type="search" class="form-control mb-2" id="cityname" placeholder="Enter city name...">
                     </form>
                     <button type="button" class="btn btn-primary btn-sm">Search</button>
                     <ul class="list-group" id="search-history"></ul>
@@ -34,15 +35,15 @@
                             <div class="d-flex flex-row">
                                 <h4 class="card-title align-self-center" id="main-city-name"></h4>
                             </div>
-                            <h5 class="card-text text-muted" id="main-city-temp">Temperature:</h5>
-                            <h5 class="card-text mt-3 text-muted" id="main-city-humid">Humidity:</h5>
-                            <h5 class="card-text mt-3 text-muted" id="main-city-wind">Wind Speed:</h5>
-                            <h5 class="card-text mt-3 text-muted" id="main-city-uv">UV Index:<span id="uv-box" class="px-2 py-1 mb-1 text-light rounded font-weight-normal"></span></h5>
+                            <h6 class="card-subtitle text-muted" id="main-city-temp">Temp:</h6>
+                            <h6 class="card-subtitle mt-3 text-muted" id="main-city-humid">Humidity:</h6>
+                            <h6 class="card-subtitle mt-3 text-muted" id="main-city-wind">Wind Speed:</h6>
+                            <h6 class="card-subtitle mt-3 text-muted" id="main-city-uv">UV Index:<span id="uv-box" class="px-2 py-1 mb-1 text-light rounded font-weight-normal"></span></h6>
                         </div>
                     </div>
 
                     <div>
-                        <h4 class="card-title mt-3">5-Day Forecast:</h4>
+                        <h5 class="card-title mt-3">5-Day Forecast:</h5>
                         <div class="row justify-content-between" id="five-day"></div>
                     </div>
                 </div>
