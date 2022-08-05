@@ -1,6 +1,6 @@
 // Array for holding the users search history
 var searchHistory = []
-var prevCitySearched = ""
+var lastCitySearch = ""
 
 // API call to openweathermap.org
 var cityWeather = function(city) {
@@ -32,6 +32,7 @@ var citySearch = function(event) {
 
     // Get value from cityname id element
     var cityName = $("#cityname").val().trim()
+    
     // sends value to cityWeather function
     if (cityName) {
         cityWeather(cityName);
@@ -70,7 +71,12 @@ if (weatherData.current.uvi >= 11) {
     }
 }
 
+// Inserts weather data into 5 day forecast cards
 var displayFiveDay = function(weatherData) {
+    
+    // Clears previous 5 day weather data card entries
+    $("#five-day").empty();
+    
     for (var i=0; i < 5; i++) {
     var fiveDayCard = $("<div class='card mt-2 text-white bg-primary'></div>");
     var fiveDayBody = $("<div class='card-body'></div>");
@@ -84,8 +90,56 @@ var displayFiveDay = function(weatherData) {
     fiveDayCard.append(fiveDayBody);
     fiveDayBody.append(date, icon, fiveDayTemp, fiveDayWind, fiveDayHumid);
     }
+
+// Saves the last city searched
+lastCitySearch = weatherData.name;
+
+// Saves to the search history using weatherdata.name API value
+saveSearchHistory(weatherData.name);
 }
 
+// Function to save the search history to local storage
+var saveSearchHistory = function(city) {
+
+    if (!searchHistory.includes(city)) {
+        searchHistory.push(city);
+        $("#search-history").append(`<a href='#' class='list-group-item list-group-item-action' id='${city}'>${city}</a>`);
+    }
+
+    // Saves searchHistory array to local storage
+    localStorage.setItem("weatherSearchHistory", JSON.stringify(searchHistory));
+
+    // Saves lastCitySearch to local storage
+    localStorage.setItem("lastCitySearch", JSON.stringify(lastCitySearch));
+
+    // Displays searchHistory array
+    loadSearchHistory();
+}
+
+// Function to load saved city search history from local storage
+var loadSearchHistory = function() {
+    searchHistory = JSON.parse(localStorage.getItem("weatherSearchHistory"));
+    lastCitySearch = JSON.parse(localStorage.getItem("lastCitySearch"));
+
+    // If local storage is empty condition creates an empty searchHistory array and a empty lastCitySearch string
+    if (!searchHistory) {
+        searchHistory = [];
+    }
+
+    if (!lastCitySearch) {
+        lastCitySearch = "";
+    }
+
+    // Clears previous values from #search-history ul
+    $("#search-history").empty();
+
+    // For loop will run through all cities found in the array
+    for (var i=0; i < searchHistory.length; i++) {
+
+        // Adds city as a link also sets id and appends to the #search-history ul
+        $("#search-history").append(`<a href='#' class='list-group-item list-group-item-action' id='${searchHistory[i]}'>${searchHistory[i]}</a>`);
+    }
+}
 
 // Searches city weather when search button is clicked
 $("#search").on("click", citySearch);
