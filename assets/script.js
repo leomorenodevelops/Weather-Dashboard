@@ -4,7 +4,6 @@ var prevCitySearched = ""
 
 // API call to openweathermap.org
 var cityWeather = function(city) {
-    var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=33a442ce0b1dad52f9352616c57d9d69&units=imperial";
     var geoLocation = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=33a442ce0b1dad52f9352616c57d9d69"
     fetch(geoLocation)
     .then(function(response) {
@@ -65,19 +64,28 @@ if (weatherData.current.uvi >= 11) {
     } else if (weatherData.current.uvi < 8 && weatherData.current.uvi >= 6) {
     $("#uv-box").css("background-color", "orange")
     } else if (weatherData.current.uvi < 6 && weatherData.current.uvi >= 3) {
-        $("#uv-box").css("backgrounnd-color", "yellow")
+        $("#uv-box").css("background-color", "yellow")
     } else {
         $("#uv-box").css("background-color", "green")
     }
 }
 
 var displayFiveDay = function(weatherData) {
-    for (var i=1; i < 6; i++) {
-    var date = $("<h6>");
+    for (var i=0; i < 5; i++) {
+    var fiveDayCard = $("<div class='card mt-2 text-white bg-primary'></div>");
+    var fiveDayBody = $("<div class='card-body'></div>");
+    var date = $("<h6 class='card-title'></h6>");
     date.text(moment.unix(weatherData.daily[i].dt).format("MM-DD-YYYY"));
-    $("#five-day").append(date);
+    var icon = $(`<img src='http://openweathermap.org/img/wn/${weatherData.daily[i].weather[0].icon}.png'>`)
+    var fiveDayTemp = $(`<p class='card-text'>Temp: ${weatherData.hourly[i].temp} °F</p>`);
+    var fiveDayWind = $(`<p class='card-text'>Wind: ${weatherData.daily[i].wind_speed} MPH</p>`);
+    var fiveDayHumid = $(`<p class='card-text'>Humidity: ${weatherData.daily[i].humidity} %</p>`);
+    $("#five-day").append(fiveDayCard);
+    fiveDayCard.append(fiveDayBody);
+    fiveDayBody.append(date, icon, fiveDayTemp, fiveDayWind, fiveDayHumid);
     }
 }
+
 
 // Searches city weather when search button is clicked
 $("#search").on("click", citySearch);
