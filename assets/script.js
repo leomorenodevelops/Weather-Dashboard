@@ -23,7 +23,7 @@ function getoneCall(data, city) {
     .then(function(data) {
         console.log(data);
         displayWeather(data, city);
-        displayFiveDay(data);
+        displayFiveDay(data, city);
     })
 }
 // Function for city search form submit
@@ -72,7 +72,7 @@ if (weatherData.current.uvi >= 11) {
 }
 
 // Inserts weather data into 5 day forecast cards
-var displayFiveDay = function(weatherData) {
+var displayFiveDay = function(weatherData, city) {
     
     // Clears previous 5 day weather data card entries
     $("#five-day").empty();
@@ -92,18 +92,19 @@ var displayFiveDay = function(weatherData) {
     }
 
 // Saves the last city searched
-lastCitySearch = weatherData.name;
+lastCitySearch = city;
 
 // Saves to the search history using weatherdata.name API value
-saveSearchHistory(weatherData.name);
+saveSearchHistory(city);
 }
 
 // Function to save the search history to local storage
 var saveSearchHistory = function(city) {
 
+        var searchedCity = $(`<a href='#' class='list-group-item list-group-item-action' id='${city}'>${city}</a>`);
     if (!searchHistory.includes(city)) {
         searchHistory.push(city);
-        $("#search-history").append(`<a href='#' class='list-group-item list-group-item-action' id='${city}'>${city}</a>`);
+        $("#search-history").append(searchedCity);
     }
 
     // Saves searchHistory array to local storage
@@ -137,9 +138,26 @@ var loadSearchHistory = function() {
     for (var i=0; i < searchHistory.length; i++) {
 
         // Adds city as a link also sets id and appends to the #search-history ul
-        $("#search-history").append(`<a href='#' class='list-group-item list-group-item-action' id='${searchHistory[i]}'>${searchHistory[i]}</a>`);
+        var searchedCityLink = $(`<a href='#' class='list-group-item list-group-item-action' id='${searchHistory[i]}'>${searchHistory[i]}</a>`)
+        $("#search-history").append(searchedCityLink);
     }
+}
+
+// Loads search history from local storage
+   loadSearchHistory();
+
+// Page starts up with the last city searched if there is a saved city
+if (lastCitySearch != "") {
+    cityWeather(lastCitySearch);
 }
 
 // Searches city weather when search button is clicked
 $("#search").on("click", citySearch);
+$("#search-history").on("click", function(event) {
+
+    // Gets the link id value
+    var prevCity = $(event.target).closest("a").attr("id");
+
+    // Passes id value to the cityWeather function
+    cityWeather(prevCity);
+});
