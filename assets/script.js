@@ -4,7 +4,7 @@ var lastCitySearch = ""
 
 // API call to openweathermap.org
 var cityWeather = function(city) {
-    var geoLocation = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=33a442ce0b1dad52f9352616c57d9d69"
+    var geoLocation = "https://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=33a442ce0b1dad52f9352616c57d9d69"
     fetch(geoLocation)
     .then(function(response) {
         return response.json()
@@ -50,7 +50,7 @@ var citySearch = function(event) {
 var displayWeather = function(weatherData, city) {
     $("#main-city-name").text(`${city} (${moment.unix(weatherData.current.dt).format("MM-DD-YYYY")})`);
     var img = $("<img>")
-    img.attr("src", "http://openweathermap.org/img/wn/" + weatherData.current.weather[0].icon + ".png")
+    img.attr("src", "https://openweathermap.org/img/wn/" + weatherData.current.weather[0].icon + ".png")
     $("#main-city-name").append(img);
     $("#main-city-temp").text(`Temp: ${weatherData.current.temp}` + "°F");
     $("#main-city-humid").text(`Humidity: ${weatherData.current.humidity}` + "%");
@@ -82,7 +82,7 @@ var displayFiveDay = function(weatherData, city) {
     var fiveDayBody = $("<div class='card-body'></div>");
     var date = $("<h6 class='card-title'></h6>");
     date.text(moment.unix(weatherData.daily[i].dt).format("MM-DD-YYYY"));
-    var icon = $(`<img src='http://openweathermap.org/img/wn/${weatherData.daily[i].weather[0].icon}.png'>`)
+    var icon = $(`<img src='https://openweathermap.org/img/wn/${weatherData.daily[i].weather[0].icon}.png'>`)
     var fiveDayTemp = $(`<p class='card-text'>Temp: ${weatherData.hourly[i].temp} °F</p>`);
     var fiveDayWind = $(`<p class='card-text'>Wind: ${weatherData.daily[i].wind_speed} MPH</p>`);
     var fiveDayHumid = $(`<p class='card-text'>Humidity: ${weatherData.daily[i].humidity} %</p>`);
